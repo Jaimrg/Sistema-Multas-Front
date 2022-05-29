@@ -32,8 +32,8 @@
                 <i class="fas fa-road me-2"></i> INTRAT
             </div>
             <div class="list-group list-group-flush my-3">
-                <a href="Painel_Administrador.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-2"><i class="fas fa-id-card me-2"></i>Registrar Automobilista</a>
-                <a href="Visualizar_dados_admin.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-tachometer-alt me-2"></i>Visualizar Dados</a>
+                <a href="Painel_Administrador.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-2"><i class="fas fa-id-card me-2"></i>Registrar Automobilista</a>
+                <a href="Visualizar_dados_admin.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-tachometer-alt me-2"></i>Visualizar Dados</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
