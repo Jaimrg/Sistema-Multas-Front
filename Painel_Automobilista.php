@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
     <title>Menu</title>
@@ -86,43 +87,66 @@
                                         <input type="text" class="form-control" placeholder="No do Documento" aria-label="No do Documento">
                                     </div>
                                     <div class="col-12">
-                                        <button type="Pesquisar" class="btn px-5 btn-success">Pesquisar</button>
+                                        <button type="Pesquisar" id="pesquisar" name="pesquisar" class="btn px-5 btn-success">Pesquisar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="py-3">
+
                             <h5>Dados Da Carta</h5>
                             <p>Encontre abaixo os detalhes da sua Carta</p>
                             <div class="row py-3 dados">
-                                <div class="col-6 col-sm-4">
-                                    <h6>Nome</h6>
-                                    <p>Balton Miguel Dlakhama</p>
-                                </div>
-                                <div class="col-6 col-sm-4">
-                                    <h6>Numero Da Carta</h6>
-                                    <p>1035366</p>
-                                </div>
-                                <div class="col-6 col-sm-4">
-                                    <h6>Morada</h6>
-                                    <p>DE NDLAVELA Q-06 130 DA MATOLA</p>
-                                </div>
+                                <?php
+                                $curl = curl_init();
 
-                                <!-- Force next columns to break to new line at md breakpoint and up -->
-                                <div class="w-100 d-none d-md-block"></div>
+                                curl_setopt_array($curl, array(
+                                    CURLOPT_URL => 'http://127.0.0.1:8000/api/search/192827/2345675621723B',
+                                    CURLOPT_RETURNTRANSFER => true,
+                                    CURLOPT_ENCODING => '',
+                                    CURLOPT_MAXREDIRS => 10,
+                                    CURLOPT_TIMEOUT => 0,
+                                    CURLOPT_FOLLOWLOCATION => true,
+                                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                                    CURLOPT_CUSTOMREQUEST => 'GET',
+                                ));
 
-                                <div class="col-6 col-sm-4">
-                                    <h6>Inicio de Validade</h6>
-                                    <p>10 de Junho de 2021</p>
-                                </div>
-                                <div class="col-6 col-sm-4">
-                                    <h6>Fim de Validade</h6>
-                                    <p>10 de Junho de 2026</p>
-                                </div>
-                                <div class="col-6 col-sm-4">
-                                    <h6>Estado</h6>
-                                    <p>Activo</p>
-                                </div>
+                                $response = json_decode(curl_exec($curl));
+
+
+                                curl_close($curl);
+                                foreach ((array) $response as $lista) { ?>
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Nome</h6>
+                                        <p><?= $lista->nome . " " . $lista->apelido ?></p>
+                                    </div>
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Numero Da Carta</h6>
+                                        <p><?= $lista->num_carta ?></p>
+                                    </div>
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Morada</h6>
+                                        <p><?= $lista->morada ?></p>
+                                    </div>
+
+                                    <!-- Force next columns to break to new line at md breakpoint and up -->
+                                    <div class="w-100 d-none d-md-block"></div>
+
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Inicio de Validade</h6>
+                                        <p><?= $lista->inicio_validade ?></p>
+                                    </div>
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Fim de Validade</h6>
+                                        <p><?= $lista->fim_validade ?></p>
+                                    </div>
+                                    <div class="col-6 col-sm-4">
+                                        <h6>Estado</h6>
+                                        <p>Activo</p>
+                                    </div>
+                                <?php
+                                }
+                                ?>
                             </div>
                         </div>
 
@@ -140,6 +164,7 @@
                                                 <th>Data</th>
                                                 <th>Estado</th>
                                                 <th>Accao</th>
+                                                <th>Opcoes</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -170,12 +195,15 @@
                                                     <td><?= $lista->descricao ?></td>
                                                     <td><?= $lista->valor ?></td>
                                                     <td><?= $lista->data_inc ?></td>
-                                                    <td><?= $lista->estado== 0 ? 'Pendente' : 'Pago'?></td>
+                                                    <td><?= $lista->estado == 0 ? 'Pendente' : 'Pago' ?></td>
                                                     <td><?= $lista->accao ?></td>
                                                     <td><a href="pagar_multa.php?id=<?= $lista->id ?>">
                                                             <button type="button" class="btn btn-primary">Pagar Multa</button>
                                                         </a></td>
-                                                    
+                                                    <td><a href="pagar_multa.php?id=<?= $lista->id ?>">
+                                                            <button type="button" class="btn btn-danger">Reclamar Multa</button>
+                                                        </a></td>
+
                                                 </tr>
                                             <?php
                                             }
@@ -196,6 +224,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <script>
         var el = document.getElementById("wrapper");
         var toggleButton = document.getElementById("menu-toggle");
@@ -203,6 +233,36 @@
         toggleButton.onclick = function() {
             el.classList.toggle("toggled");
         };
+
+        $(function() {
+            $("#pesquisar").on('click', function() {
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/search/192827/2345675621723B",
+                    method: "GET",
+                    data: {
+                        num_carta: "192827",
+                        num_identidade: "2345675621723B"
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        /*alert(response.num_carta+"  "+response.id); 
+                        result = JSON.stringify(data);                   
+                        alert(result['id']);*/
+                        result = JSON.stringify(data);
+                        dados = JSON.parse(data);
+                        dados.forEach(item => {
+                            alert(item.nome);
+                        });
+                    },
+                    error: function(err) {
+                        alert("Error")
+                        console.log(err)
+                    }
+                })
+            })
+
+        })
     </script>
 </body>
 
