@@ -31,9 +31,9 @@
                 <i class="fas fa-road me-2"></i> INTRAT
             </div>
             <div class="list-group list-group-flush my-3">
-                <a href="Painel_Automobilista.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-g"><i class="fas fa-id-card me-2"></i>Informações da Carta</a>
-                <a href="Ver_Marcacoes.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-tachometer-alt me-2"></i>Marcação de atendimento</a>
-                <a href="Marcacoes.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-chart-line me-2"></i>Marcações</a>
+                <a href="Painel_Automobilista.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-g"><i class="fas fa-id-card me-2"></i>Informações da Carta</a>
+                <a href="Ver_Marcacoes.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-tachometer-alt me-2"></i>Marcação de atendimento</a>
+                <a href="Marcacoes.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-chart-line me-2"></i>Marcações</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -78,17 +78,19 @@
                             <div class="about-text">
                                 <p class="">Preencha os campos e clique em pesquisar</p>
                                 <div class="row g-3">
+
                                     <div class="col-sm-4">
                                         <label for="formGroupExampleInput2" class="form-label">Nº Da Carta de Condução</label>
-                                        <input type="text" class="form-control" placeholder="No Da Carta" aria-label="No Da Carta">
+                                        <input type="text" id="num_carta" name="num_carta" class="form-control" placeholder="No Da Carta" aria-label="No Da Carta">
                                     </div>
                                     <div class="col-sm-4">
                                         <label for="formGroupExampleInput2" class="form-label">Nº Do Documento Registado Na Carta</label>
-                                        <input type="text" class="form-control" placeholder="No do Documento" aria-label="No do Documento">
+                                        <input type="text" id="num_identidade" name="num_identidade" class="form-control" placeholder="No do Documento" aria-label="No do Documento">
                                     </div>
                                     <div class="col-12">
-                                        <button type="Pesquisar" id="pesquisar" name="pesquisar" class="btn px-5 btn-success">Pesquisar</button>
+                                        <button type="submit" id="pesquisar" name="pesquisar" class="btn px-5 btn-success">Pesquisar</button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -97,56 +99,42 @@
                             <h5>Dados Da Carta</h5>
                             <p>Encontre abaixo os detalhes da sua Carta</p>
                             <div class="row py-3 dados">
-                                <?php
-                                $curl = curl_init();
+                                <div class="col-6 col-sm-3">
+                                    <h6>Nome</h6>
+                                    <p id="nome"></p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Numero Da Carta</h6>
+                                    <p id=numero_carta></p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Categoria</h6>
+                                    <p id="categoria"></p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Morada</h6>
+                                    <p id="morada"></p>
+                                </div>
 
-                                curl_setopt_array($curl, array(
-                                    CURLOPT_URL => 'http://127.0.0.1:8000/api/search/192827/2345675621723B',
-                                    CURLOPT_RETURNTRANSFER => true,
-                                    CURLOPT_ENCODING => '',
-                                    CURLOPT_MAXREDIRS => 10,
-                                    CURLOPT_TIMEOUT => 0,
-                                    CURLOPT_FOLLOWLOCATION => true,
-                                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                                    CURLOPT_CUSTOMREQUEST => 'GET',
-                                ));
+                                <!-- Force next columns to break to new line at md breakpoint and up -->
+                                <div class="w-100 d-none d-md-block"></div>
 
-                                $response = json_decode(curl_exec($curl));
-
-
-                                curl_close($curl);
-                                foreach ((array) $response as $lista) { ?>
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Nome</h6>
-                                        <p><?= $lista->nome . " " . $lista->apelido ?></p>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Numero Da Carta</h6>
-                                        <p><?= $lista->num_carta ?></p>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Morada</h6>
-                                        <p><?= $lista->morada ?></p>
-                                    </div>
-
-                                    <!-- Force next columns to break to new line at md breakpoint and up -->
-                                    <div class="w-100 d-none d-md-block"></div>
-
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Inicio de Validade</h6>
-                                        <p><?= $lista->inicio_validade ?></p>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Fim de Validade</h6>
-                                        <p><?= $lista->fim_validade ?></p>
-                                    </div>
-                                    <div class="col-6 col-sm-4">
-                                        <h6>Estado</h6>
-                                        <p>Activo</p>
-                                    </div>
-                                <?php
-                                }
-                                ?>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Inicio de Validade</h6>
+                                    <p id="inicio_validade"></p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Fim de Validade</h6>
+                                    <p id="fim_validade"></p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Estado</h6>
+                                    <p id="estado">Activo</p>
+                                </div>
+                                <div class="col-6 col-sm-3">
+                                    <h6>Nacionalidade</h6>
+                                    <p id="nacionalidade">Activo</p>
+                                </div>                                
                             </div>
                         </div>
 
@@ -167,9 +155,11 @@
                                                 <th>Opcoes</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="myTable">
 
                                             <?php
+
+                                            /*
                                             $curl = curl_init();
 
                                             curl_setopt_array($curl, array(
@@ -207,7 +197,7 @@
                                                 </tr>
                                             <?php
                                             }
-                                            ?>
+                                            */ ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -236,30 +226,118 @@
 
         $(function() {
             $("#pesquisar").on('click', function() {
+                var num_carta = $("#num_carta").val();
+                var num_identidade = $("#num_identidade").val();
+                console.log(num_carta);
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/search/192827/2345675621723B",
-                    method: "GET",
+                    url: "http://127.0.0.1:8000/api/search/" + num_carta + '/' + num_identidade,
+                    method: "get",
                     data: {
-                        num_carta: "192827",
-                        num_identidade: "2345675621723B"
+                        'num_carta': num_carta,
+                        'num_identidade': num_identidade
                     },
-                    dataType: 'json',
-                    success: function(data) {
-                        console.log(data);
-                        /*alert(response.num_carta+"  "+response.id); 
-                        result = JSON.stringify(data);                   
-                        alert(result['id']);*/
-                        result = JSON.stringify(data);
-                        dados = JSON.parse(data);
-                        dados.forEach(item => {
-                            alert(item.nome);
-                        });
+                    //dataType: 'json',
+                    success: function(data, url) {
+
+                        try {
+
+                            respo = JSON.parse(data);
+                        } catch (e) {
+
+                            respo = data;
+                        }
+                        buildTable(respo, data);
                     },
                     error: function(err) {
                         alert("Error")
                         console.log(err)
                     }
                 })
+
+                function buildTable(data, d) {
+                    console.log(data)                    
+                    for (var i = 0; i < data.length; i++) {
+                        alert('valor: '+data[i].nome);                        
+                        document.getElementById("nome").innerHTML = data[i].nome + ' ' + data[i].apelido;
+                        document.getElementById("numero_carta").innerHTML = data[i].num_carta;
+                        document.getElementById("morada").innerHTML = data[i].morada;
+                        document.getElementById("inicio_validade").innerHTML = data[i].inicio_validade;
+                        document.getElementById("fim_validade").innerHTML = data[i].fim_validade;
+                        document.getElementById("estado").innerHTML = data[i].estado;
+                        document.getElementById("categoria").innerHTML = data[i].categoria;
+                        document.getElementById("nacionalidade").innerHTML = data[i].pais_origem;
+
+                    }
+
+
+                }
+            })
+
+        })
+
+
+        $(function() {
+            $("#pesquisar").on('click', function() {
+                var num_carta = $("#num_carta").val();
+                var num_identidade = $("#num_identidade").val();
+                console.log(num_carta);
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/getall-multas",
+                    method: "get",
+                    data: {
+                        'num_carta': num_carta,
+                        'num_identidade': num_identidade
+                    },
+                    //dataType: 'json',
+                    success: function(data) {
+
+                        try {
+
+                            respo = JSON.parse(data);
+                        } catch (e) {
+
+                            respo = data;
+                        }
+                        buildTable(respo, data);
+                    },
+                    error: function(err) {
+                        alert("Error")
+                        console.log(err)
+                    }
+                })
+
+                function buildTable(data, d) {
+                    console.log(data)
+                    var tabela = document.getElementById('myTable')
+                    //data = await response.json();
+                    /*data.forEach(obj => {
+                        Object.entries(obj).forEach(([key, value]) => {
+                            console.log(`${key} ${value}`);
+                        });
+                        console.log('-------------------');
+                    });*/
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log('valor: ' + data[i].valor);
+                        var linha = `<tr>
+                                         <td>${data[i].artigo}</td>  
+                                         <td>${data[i].descricao}</td>
+                                         <td>${data[i].valor}</td>
+                                         <td>${data[i].data_inc}</td>
+                                         <td>${data[i].estado}</td>
+                                         <td>${data[i].accao}</td>
+                                         <td>'
+                                            <a href="Editar.php?id='.$vaga->id.'">
+                                                <button type="button" class="btn btn-primary">Pagar</button>
+                                            </a>
+                                            <a href="Excluir.php?id='.$vaga->id.'">
+                                                <button type="button" class="btn btn-danger">Reclamar</button>
+                                            </a>'
+                                        </td>        
+                                     <tr>`
+                        tabela.innerHTML += linha
+                    }
+
+                }
             })
 
         })

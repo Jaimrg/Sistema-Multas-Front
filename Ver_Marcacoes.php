@@ -26,11 +26,11 @@
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
                 <i class="fas fa-road me-2"></i> INTRAT</div>
             <div class="list-group list-group-flush my-3">
-                <a href="Painel_Automobilista.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                <a href="Painel_Automobilista.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-id-card me-2"></i>Informações da Carta</a>
-                <a href="Ver_Marcacoes.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-2"><i
+                <a href="Ver_Marcacoes.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color-2"><i
                         class="fas fa-tachometer-alt me-2"></i>Marcação de atendimento</a>
-                <a href="Marcacoes.html" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color"><i
+                <a href="Marcacoes.php" class="list-group-item list-group-item-action bg-transparent second-text fw-bold color"><i
                         class="fas fa-chart-line me-2"></i>Marcações</a>            
             </div>
         </div>
