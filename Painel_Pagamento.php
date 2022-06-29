@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt-pt">
 
@@ -80,6 +82,7 @@
                                 <div class="col-sm-4">
                                     <label for="telefone" class="form-label"><b class="b">Numero de Telefone</b> <b class="text-red">*</b></label>
                                     <input type="text" id="telefone" name="telefone" class="form-control" placeholder="telefone" aria-label="modelo">
+                                    <input type="hidden" id="id" name="nome" class="form-control" placeholder="telefone" aria-label="modelo" value=<?php echo $_GET['id']; ?>>
                                 </div>
                             </div>
                             
@@ -106,53 +109,35 @@
 
                 toggleButton.onclick = function() {
                     el.classList.toggle("toggled");
-                };*/
-                var id= <?php
-                    $_GET['id'];
-                ?>
-                alert(id);
+                };*/                                
                 $(function() {
                     $("#submeter").on('click', function() {
-                        var artigo = $("#artigo").val();
-                        var marca = $("#marca").val();
-                        var modelo = $("#modelo").val();
-                                                                                        
+                        var meio = $("#meio").val();
+                        var valor = $("#valor").val();
+                        var telefone = $("#telefone").val();
+                        var id = $("#id").val();                                                                               
                         if (id != "") { //&& apelido != "" && data_nascimento != "" && sexo != "" && numero_documento != "" && tipo_documento != ""
                             $.ajax({
-                                url: "http://127.0.0.1:8000/api/create-multas",
-                                method: "POST",
+                                url: "http://127.0.0.1:8000/api/pagar-multa/"+ id + '/' + valor,
+                                method: "PUT",
                                 data: {
-                                    'artigo': artigo,
-                                    'marca': marca,
-                                    'modelo': modelo,
-                                    'matricula': matricula,
+                                    'meio': meio,
                                     'valor': valor,
-                                    'estado':0,
-                                    'id_automobilista':1,
-                                    'num_carta': num_carta,
-                                    'descricao': descricao,
-                                    'accao':"Pagamento",
-                                    'data_inc':"2020-10-10",
-                                    'data_fim':"2020-10-10",
-                                    'id_agente':1
+                                    'telefone': telefone,                                    
                                 },
                                 dataType: 'json',
                                 success: function(data) {
-                                    $("#artigo").val('');
-                                    $("#marca").val('');
-                                    $("#modelo").val('');
-                                    $("#matricula").val('');
-                                    $("#valor").val('').trigger("change");
-                                    $("#num_carta").val('');
-                                    $("#descricao").val('');                                    
+                                    $("#telefone").val('');
+                                    $("#valor").val('');                                    
+                                    $("#meio").val('').trigger("change");                                                                        
                                     swal({
                                         icon: 'success',
                                         title: 'Otimo',
-                                        text: "Multa Cadastrada com sucesso",
+                                        text: "Multa Paga com Sucesso",
                                         footer: '<a href="">?</a>'
                                     })
                                     //alert(data.message);
-
+                                    //window.location.href="Painel_Automobilista.php"
                                 },
                                 error: function(err) {
                                     //                                    alert("Error")
