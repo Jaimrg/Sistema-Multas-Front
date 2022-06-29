@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
     <title>Menu</title>
@@ -50,7 +52,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,7 +65,7 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
+                </div>-->
             </nav>
 
             <div class="container-fluid px-4">
@@ -129,12 +131,12 @@
                                 </div>
                                 <div class="col-6 col-sm-3">
                                     <h6>Estado</h6>
-                                    <p id="estado">Activo</p>
+                                    <p id="estado"></p>
                                 </div>
                                 <div class="col-6 col-sm-3">
-                                    <h6>Nacionalidade</h6>
-                                    <p id="nacionalidade">Activo</p>
-                                </div>                                
+                                    <h6>Pais de origem</h6>
+                                    <p id="nacionalidade"></p>
+                                </div>
                             </div>
                         </div>
 
@@ -246,24 +248,46 @@
 
                             respo = data;
                         }
+                        if(respo.length==0){
+                            swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Parece que esse automobilista nao existe!',
+                            footer: '<a href="">?</a>'
+                        })
+                        }
+                        else{
+                            swal({
+                            icon: 'success',
+                            title: 'Otimo',
+                            text: 'Automobilista encontrado com sucesso',
+                            footer: '<a href="">?</a>'
+                        })                        
+                    }
                         buildTable(respo, data);
+                        
                     },
-                    error: function(err) {
-                        alert("Error")
+                    error: function(err) { 
+                        swal({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Parece que esse automobilista nao existe!',
+                            footer: '<a href="">?</a>'
+                        })                       
                         console.log(err)
                     }
                 })
 
                 function buildTable(data, d) {
-                    console.log(data)                    
+                    console.log(data)
                     for (var i = 0; i < data.length; i++) {
-                        alert('valor: '+data[i].nome);                        
+                        //alert('valor: ' + data[i].nome);
                         document.getElementById("nome").innerHTML = data[i].nome + ' ' + data[i].apelido;
                         document.getElementById("numero_carta").innerHTML = data[i].num_carta;
                         document.getElementById("morada").innerHTML = data[i].morada;
                         document.getElementById("inicio_validade").innerHTML = data[i].inicio_validade;
                         document.getElementById("fim_validade").innerHTML = data[i].fim_validade;
-                        document.getElementById("estado").innerHTML = data[i].estado;
+                        document.getElementById("estado").innerHTML = "Valido";//data[i].estado;
                         document.getElementById("categoria").innerHTML = data[i].categoria;
                         document.getElementById("nacionalidade").innerHTML = data[i].pais_origem;
 
@@ -282,7 +306,7 @@
                 var num_identidade = $("#num_identidade").val();
                 console.log(num_carta);
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/getall-multas",
+                    url: "http://127.0.0.1:8000/api/multas-automobilista/" + num_carta,
                     method: "get",
                     data: {
                         'num_carta': num_carta,
@@ -301,7 +325,8 @@
                         buildTable(respo, data);
                     },
                     error: function(err) {
-                        alert("Error")
+                        
+//                        alert("Error")
                         console.log(err)
                     }
                 })
@@ -309,6 +334,8 @@
                 function buildTable(data, d) {
                     console.log(data)
                     var tabela = document.getElementById('myTable')
+                    //var x = document.getElementById("myTable").getElementsByTagName("tr");
+                    
                     //data = await response.json();
                     /*data.forEach(obj => {
                         Object.entries(obj).forEach(([key, value]) => {
@@ -316,6 +343,99 @@
                         });
                         console.log('-------------------');
                     });*/
+                    if (data.length == 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Parece que esse automobilista nao existe!',
+                            footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log('valor: ' + data[i].valor);
+                        if(data[i].estado==0){
+                            var estado = "Nao Pago"
+                        }
+                        else{
+                            var estado = "Pago"
+                        }
+                        var linha = `<tr>
+                                         <td>${data[i].artigo}</td>  
+                                         <td>${data[i].descricao}</td>
+                                         <td>${data[i].valor}</td>
+                                         <td>${data[i].data_inc}</td>
+                                         <td>${estado}</td>
+                                         <td>${data[i].accao}</td>
+                                         <td>'
+                                            <a href="Painel_Pagamento.php?id=${data[i].id}">
+                                                <button type="button" class="btn btn-primary" id="pagar">Pagar</button>
+                                            </a>
+                                            <a href="Excluir.php?id='.$vaga->id.'">
+                                                <button type="button" class="btn btn-danger" id="ver_mais">Mais</button>
+                                            </a>'
+                                        </td>        
+                                     <tr>`
+                        tabela.innerHTML += linha
+                        /*if(data[i].estado==0){
+                            x[i].style.backgroundColor = "green";
+                        }*/
+                    }
+                    
+
+                }
+            })
+
+        })
+
+        $(function() {
+            $("#pagar").on('click', function() {
+                alert("pagar")
+                $.ajax({
+                    /*url: "http://127.0.0.1:8000/api/multas-automobilista/",
+                    method: "get",
+                    data: {
+                        'num_carta': num_carta,
+                        'num_identidade': num_identidade
+                    },
+                    //dataType: 'json',
+                    success: function(data) {
+
+                        try {
+
+                            respo = JSON.parse(data);
+                        } catch (e) {
+
+                            respo = data;
+                        }
+                        buildTable(respo, data);
+                    },
+                    error: function(err) {
+                        
+//                        alert("Error")
+                        console.log(err)
+                    }*/
+                })
+
+                function buildTable(data, d) {
+                    console.log(data)
+                    var tabela = document.getElementById('myTable')
+                    //var x = document.getElementById("myTable").getElementsByTagName("tr");
+                    
+                    //data = await response.json();
+                    /*data.forEach(obj => {
+                        Object.entries(obj).forEach(([key, value]) => {
+                            console.log(`${key} ${value}`);
+                        });
+                        console.log('-------------------');
+                    });*/
+                    if (data.length == 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Parece que esse automobilista nao existe!',
+                            footer: '<a href="">Why do I have this issue?</a>'
+                        })
+                    }
                     for (var i = 0; i < data.length; i++) {
                         //console.log('valor: ' + data[i].valor);
                         var linha = `<tr>
@@ -327,15 +447,19 @@
                                          <td>${data[i].accao}</td>
                                          <td>'
                                             <a href="Editar.php?id='.$vaga->id.'">
-                                                <button type="button" class="btn btn-primary">Pagar</button>
+                                                <button type="button" class="btn btn-primary" id="pagar">Pagar</button>
                                             </a>
                                             <a href="Excluir.php?id='.$vaga->id.'">
-                                                <button type="button" class="btn btn-danger">Reclamar</button>
+                                                <button type="button" class="btn btn-danger" id="ver_mais">Reclamar</button>
                                             </a>'
                                         </td>        
                                      <tr>`
                         tabela.innerHTML += linha
+                        /*if(data[i].estado==0){
+                            x[i].style.backgroundColor = "green";
+                        }*/
                     }
+                    
 
                 }
             })

@@ -1,0 +1,37 @@
+
+:root {
+    --main-bg-color: rgb(40, 167, 69);
+    --main-text-color: rgb(40, 167, 69);
+    --second-text-color: #bbbec5;
+    --second-bg-color: #c1efde;
+    --button-color:rgb(40, 167, 69);
+    --text-red:rgb(255,0,0);
+    --text-green:rgb(40, 167, 69);
+    --bg-green:rgb(40, 167, 69);
+  }
+
+body{
+	background :var(--main-bg-color);
+}
+
+form{
+	background: #FFF;
+}
+
+.form-container{
+	border-radius: 10px;
+	padding: 30px;
+	box-shadow: 0px 0px 10px 0px;
+}
+.bg{
+
+	width: 60px;
+	height: 60px;
+	position: absolute;
+	top:-35px;
+	left: 40%;
+	border-radius: 50%;
+
+
+}
+

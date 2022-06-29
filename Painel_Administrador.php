@@ -8,6 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <!-- jQuery Countdown (displays countdown text to a specified date) -->
+<script type="text/javascript" src="https://unpkg.com/flatpickr@^4.6.1"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
     <title>Admintrador</title>
@@ -103,7 +109,7 @@
 
                                 <div class="col-sm-4">
                                     <label for="data_nascimento" class="form-label"><b class="b">Data de Nascimento</b><b class="text-red">*</b></label>
-                                    <input type="text" class="form-control" placeholder="Data" aria-label="Data" id="data_nascimento" name="data_nascimento">
+                                    <input type="text" class="form-control form-control-solid" placeholder="Data" aria-label="Data" id="data_nascimento" name="data_nascimento">
                                 </div>
 
                                 <div class="col-sm-4">
@@ -174,7 +180,12 @@
 
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
-
+            <script>
+                /*$("#data_nascimento").flatpickr({
+                        enableTime: false,
+                        dateFormat: "Y-m-d",
+                    });*/
+            </script>
             <script>
                 /* var el = document.getElementById("wrapper");
                 var toggleButton = document.getElementById("menu-toggle");
@@ -182,9 +193,9 @@
                 toggleButton.onclick = function() {
                     el.classList.toggle("toggled");
                 };*/
-                
-                $(function() {
-                    $("#submeter").on('click', function() {                        
+
+                $(function() {                    
+                    $("#submeter").on('click', function() {
                         var num_carta = $("#num_carta").val();
                         var nome = $("#nome").val();
                         var apelido = $("#apelido").val();
@@ -206,7 +217,7 @@
                                     'nome': nome,
                                     'apelido': apelido,
                                     'data_nasc': data_nascimento,
-                                    'pais_origem':"Mocambique",
+                                    'pais_origem': "Mocambique",
                                     'sexo': sexo,
                                     'morada': morada,
                                     'tipo_documento': tipo_documento,
@@ -228,11 +239,23 @@
                                     $("#categoria_carta").val("").trigger("change");
                                     $("#inicio_validade").val('');
                                     $("#fim_validade").val('');
-                                    alert(data.message);
+                                    swal({
+                                        icon: 'success',
+                                        title: 'Otimo',
+                                        text: "Cadastrado com sucesso",
+                                        footer: '<a href="">?</a>'
+                                    })
+                                    //alert(data.message);
 
                                 },
                                 error: function(err) {
-                                    alert("Error")
+                                    //                                    alert("Error")
+                                    swal({
+                                        icon: 'error',
+                                        title: 'OPss...',
+                                        text: err,
+                                        footer: '<a href="">?</a>'
+                                    })
                                     console.log(err)
                                 }
                             })
